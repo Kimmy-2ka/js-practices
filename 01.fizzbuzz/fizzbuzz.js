@@ -8,6 +8,6 @@ for (let count = 1; count <= 20; count++) {
   } else if (count % 5 === 0) {
     console.log("Buzz");
   } else {
-    console.log(`${count}`);
+    console.log(String(count));
   }
 }
