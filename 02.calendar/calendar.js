@@ -17,6 +17,9 @@ const weekdays = "日 月 火 水 木 金 土";
 console.log(`${monthYear}\n${weekdays}`);
 
 function printDays(start, end) {
+  const blank = start.weekday % 7;
+  process.stdout.write("   ".repeat(blank));
+
   for (let d = start; d <= end; d = d.plus({ days: 1 })) {
     const day = d.toFormat("d").padStart(2);
     process.stdout.write(day);
