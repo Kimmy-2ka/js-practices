@@ -8,19 +8,20 @@ const now = DateTime.now();
 const month = argv.m ?? now.month;
 const year = argv.y ?? now.year;
 
-const firstDate = DateTime.local(year, month, 1);
-const endDate = firstDate.endOf("month");
+function printCal(year, month) {
+  console.log(`      ${month}月 ${year}\n日 月 火 水 木 金 土`);
 
-const monthYear = `      ${month}月 ${year}`;
-const weekdays = "日 月 火 水 木 金 土";
+  buildDays(year, month);
+}
 
-console.log(`${monthYear}\n${weekdays}`);
+function buildDays(year, month) {
+  const firstDate = DateTime.local(year, month, 1);
+  const endDate = firstDate.endOf("month");
 
-function printDays(start, end) {
-  const blank = start.weekday % 7;
+  const blank = firstDate.weekday % 7;
   process.stdout.write("   ".repeat(blank));
 
-  for (let d = start; d <= end; d = d.plus({ days: 1 })) {
+  for (let d = firstDate; d <= endDate; d = d.plus({ days: 1 })) {
     const day = d.toFormat("d").padStart(2);
     process.stdout.write(day);
     if (d.weekday === 6) process.stdout.write("\n");
@@ -28,4 +29,4 @@ function printDays(start, end) {
   }
 }
 
-printDays(firstDate, endDate);
+printCal(year, month);
