@@ -16,15 +16,15 @@ function printCal(year, month) {
 
 function buildDays(year, month) {
   const firstDate = DateTime.local(year, month, 1);
-  const endDate = firstDate.endOf("month");
+  const lastDate = firstDate.endOf("month");
 
   const blank = firstDate.weekday % 7;
   process.stdout.write("   ".repeat(blank));
 
-  for (let d = firstDate; d <= endDate; d = d.plus({ days: 1 })) {
-    const day = d.toFormat("d").padStart(2);
+  for (let date = firstDate; date <= lastDate; date = date.plus({ days: 1 })) {
+    const day = date.toFormat("d").padStart(2);
     process.stdout.write(day);
-    if (d.weekday === 6) process.stdout.write("\n");
+    if (date.weekday === 6) process.stdout.write("\n");
     else process.stdout.write(" ");
   }
 }
