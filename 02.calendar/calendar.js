@@ -1,20 +1,28 @@
 #!/usr/bin/env node
 import { DateTime } from "luxon";
+import minimist from "minimist";
 
-const today = DateTime.now();
+const argv = minimist(process.argv.slice(2));
+const now = DateTime.now();
 
-const monthYear = `      ${today.month}月 ${today.year}`;
+const month = argv.m ?? now.month;
+const year = argv.y ?? now.year;
+
+const firstDate = DateTime.local(year, month, 1);
+const endDate = firstDate.endOf("month");
+
+const monthYear = `      ${month}月 ${year}`;
 const weekdays = "日 月 火 水 木 金 土";
 
 console.log(`${monthYear}\n${weekdays}`);
 
-function printDays(end) {
-  for (let d = today.startOf("month"); d <= end; d = d.plus({ days: 1 })) {
+function printDays(start, end) {
+  for (let d = start; d <= end; d = d.plus({ days: 1 })) {
     const day = d.toFormat("d").padStart(2);
     process.stdout.write(day);
-    if (d.weekday == 6) process.stdout.write("\n");
+    if (d.weekday === 6) process.stdout.write("\n");
     else process.stdout.write(" ");
   }
 }
 
-printDays(today.endOf("month"));
+printDays(firstDate, endDate);
