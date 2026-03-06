@@ -22,10 +22,9 @@ function buildDays(year, month) {
   process.stdout.write("   ".repeat(blank));
 
   for (let date = firstDate; date <= lastDate; date = date.plus({ days: 1 })) {
-    const day = date.toFormat("d").padStart(2);
-    process.stdout.write(day);
-    if (date.weekday === 6) process.stdout.write("\n");
-    else process.stdout.write(" ");
+    const day = date.day;
+    const lineBreak = date.weekday === 6 || day === lastDate.day;
+    process.stdout.write(String(day).padStart(2) + (lineBreak ? "\n" : " "));
   }
 }
 
