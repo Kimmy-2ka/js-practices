@@ -5,20 +5,22 @@ import minimist from "minimist";
 function printCal(year, month) {
   console.log(`      ${month}月 ${year}\n日 月 火 水 木 金 土`);
 
-  buildDays(year, month);
+  printDays(year, month);
 }
 
-function buildDays(year, month) {
+function printDays(year, month) {
   const firstDate = DateTime.local(year, month, 1);
   const lastDate = firstDate.endOf("month");
 
-  const blank = firstDate.weekday % 7;
-  process.stdout.write("   ".repeat(blank));
+  const weekdayOffset = firstDate.weekday % 7;
+  process.stdout.write("   ".repeat(weekdayOffset));
 
   for (let date = firstDate; date <= lastDate; date = date.plus({ days: 1 })) {
     const day = date.day;
-    const lineBreak = date.weekday === 6 || day === lastDate.day;
-    process.stdout.write(String(day).padStart(2) + (lineBreak ? "\n" : " "));
+    const shouldLineBreak = date.weekday === 6 || day === lastDate.day;
+    process.stdout.write(
+      String(day).padStart(2) + (shouldLineBreak ? "\n" : " "),
+    );
   }
 }
 
