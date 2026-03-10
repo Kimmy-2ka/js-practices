@@ -3,7 +3,8 @@ import { DateTime } from "luxon";
 import minimist from "minimist";
 
 function printCal(year, month) {
-  console.log(`      ${month}月 ${year}\n日 月 火 水 木 金 土`);
+  console.log(`      ${month}月 ${year}`);
+  console.log("日 月 火 水 木 金 土");
 
   printDays(year, month);
 }
