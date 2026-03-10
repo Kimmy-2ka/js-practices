@@ -2,12 +2,6 @@
 import { DateTime } from "luxon";
 import minimist from "minimist";
 
-const argv = minimist(process.argv.slice(2));
-const now = DateTime.now();
-
-const month = argv.m ?? now.month;
-const year = argv.y ?? now.year;
-
 function printCal(year, month) {
   console.log(`      ${month}月 ${year}\n日 月 火 水 木 金 土`);
 
@@ -27,5 +21,10 @@ function buildDays(year, month) {
     process.stdout.write(String(day).padStart(2) + (lineBreak ? "\n" : " "));
   }
 }
+
+const argv = minimist(process.argv.slice(2));
+const now = DateTime.now();
+const year = argv.y ?? now.year;
+const month = argv.m ?? now.month;
 
 printCal(year, month);
