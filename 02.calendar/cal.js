@@ -16,11 +16,9 @@ function printDays(year, month) {
   process.stdout.write("   ".repeat(weekdayOffset));
 
   for (let date = firstDate; date <= lastDate; date = date.plus({ days: 1 })) {
-    const day = date.day;
-    const shouldLineBreak = date.weekday === 6 || day === lastDate.day;
-    process.stdout.write(
-      String(day).padStart(2) + (shouldLineBreak ? "\n" : " "),
-    );
+    process.stdout.write(String(date.day).padStart(2));
+    const shouldLineBreak = date.weekday === 6 || date.day === lastDate.day;
+    process.stdout.write(shouldLineBreak ? "\n" : " ");
   }
 }
 
