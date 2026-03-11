@@ -18,8 +18,8 @@ function printDays(year, month) {
 
   for (let date = firstDate; date <= lastDate; date = date.plus({ days: 1 })) {
     process.stdout.write(String(date.day).padStart(2));
-    const shouldLineBreak = date.weekday === 6 || date.day === lastDate.day;
-    process.stdout.write(shouldLineBreak ? "\n" : " ");
+    const isEndOfLine = date.weekday === 6 || date.day === lastDate.day;
+    process.stdout.write(isEndOfLine ? "\n" : " ");
   }
 }
 
