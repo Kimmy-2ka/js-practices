@@ -2,55 +2,42 @@
 import sqlite3 from "sqlite3";
 const db = new sqlite3.Database(":memory:");
 
-function createBooksTable() {
-  return new Promise((resolve) => {
-    db.run(
-      `CREATE TABLE books(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL UNIQUE
-      )`,
-      function () {
-        resolve();
-      },
-    );
+function run(sql, params) {
+  return new Promise((resolve, reject) => {
+    db.run(sql, params, function (err) {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(this);
+    });
   });
 }
 
-function insertBook() {
-  return new Promise((resolve) => {
-    db.run(
-      `INSERT INTO books(title) VALUES(?)`,
-      ["Never Let Me Go"],
-      function () {
-        resolve(this.lastID);
-      },
-    );
-  });
-}
-
-function findBook(id) {
-  return new Promise((resolve) => {
-    db.get(`SELECT * FROM books WHERE id = ?`, [id], function (_err, row) {
+function get(sql, params) {
+  return new Promise((resolve, reject) => {
+    db.get(sql, params, function (err, row) {
+      if (err) {
+        reject(err);
+        return;
+      }
       resolve(row);
     });
   });
 }
 
-function dropBooksTable() {
-  return new Promise((resolve) => {
-    db.run(`DROP TABLE books`, function () {
-      resolve();
-    });
-  });
-}
-
-createBooksTable()
-  .then(insertBook)
-  .then((id) => {
-    console.log(id);
-    return findBook(id);
+run(
+  `CREATE TABLE books(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL UNIQUE
+  )`,
+)
+  .then(() => run(`INSERT INTO books(title) VALUES(?)`, ["Never Let Me Go"]))
+  .then((statement) => {
+    console.log(statement.lastID);
+    return get(`SELECT * FROM books WHERE id = ?`, [statement.lastID]);
   })
   .then((row) => {
     console.log(row);
-    return dropBooksTable();
+    return run(`DROP TABLE books`);
   });
