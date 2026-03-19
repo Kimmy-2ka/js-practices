@@ -28,12 +28,20 @@ async function errorCase() {
   try {
     await run(`INSERT INTO books(title) VALUES(?)`, ["Never Let Me Go"]);
   } catch (err) {
-    console.error(`${err.name}: ${err.message}`);
+    if (err.code === "SQLITE_CONSTRAINT") {
+      console.error(`${err.name}: ${err.message}`);
+    } else {
+      throw err;
+    }
   }
   try {
     await all(`SELECT * FROM book ORDER BY id`);
   } catch (err) {
-    console.error(`${err.name}: ${err.message}`);
+    if (err.code === "SQLITE_ERROR") {
+      console.error(`${err.name}: ${err.message}`);
+    } else {
+      throw err;
+    }
   }
   await run(`DROP TABLE books`);
 }
