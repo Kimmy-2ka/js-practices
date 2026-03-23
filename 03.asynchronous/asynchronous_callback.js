@@ -37,10 +37,14 @@ function errorCase(db) {
             "INSERT INTO books(title) VALUES(?)",
             ["Never Let Me Go"],
             function (err) {
-              if (err) console.error(`${err.name}: ${err.message}`);
+              if (err) {
+                console.error(`${err.name}: ${err.message}`);
+              }
 
               db.all("SELECT * FROM book ORDER BY id", function (err) {
-                if (err) console.error(`${err.name}: ${err.message}`);
+                if (err) {
+                  console.error(`${err.name}: ${err.message}`);
+                }
 
                 db.run("DROP TABLE books");
               });
