@@ -2,9 +2,7 @@
 import timers from "timers/promises";
 import sqlite3 from "sqlite3";
 
-const db = new sqlite3.Database(":memory:");
-
-function successCase() {
+function successCase(db) {
   db.run(
     `CREATE TABLE books(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,7 +28,7 @@ function successCase() {
   );
 }
 
-function errorCase() {
+function errorCase(db) {
   db.run(
     `CREATE TABLE books(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -60,8 +58,9 @@ function errorCase() {
   );
 }
 
+const db = new sqlite3.Database(":memory:");
 console.log("--エラーなしのプログラム--");
-successCase();
+successCase(db);
 await timers.setTimeout(100);
 console.log("--エラーありのプログラム--");
-errorCase();
+errorCase(db);
