@@ -28,24 +28,29 @@ function errorCase(db) {
   db.run(
     "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
     () =>
-      db.run("INSERT INTO books(title) VALUES(?)", ["Never Let Me Go"], () =>
-        db.run(
-          "INSERT INTO books(title) VALUES(?)",
-          ["Never Let Me Go"],
-          (err) => {
-            if (err) {
-              console.error(`${err.name}: ${err.message}`);
-            }
-
-            db.all("SELECT * FROM book ORDER BY id", (err) => {
+      db.run(
+        "INSERT INTO books(title) VALUES(?)",
+        ["Never Let Me Go"],
+        function () {
+          const bookId = this.lastID;
+          db.run(
+            "INSERT INTO books(title) VALUES(?)",
+            ["Never Let Me Go"],
+            (err) => {
               if (err) {
                 console.error(`${err.name}: ${err.message}`);
               }
 
-              db.run("DROP TABLE books");
-            });
-          },
-        ),
+              db.get("SELECT * FROM book WHERE id = ?", [bookId], (err) => {
+                if (err) {
+                  console.error(`${err.name}: ${err.message}`);
+                }
+
+                db.run("DROP TABLE books");
+              });
+            },
+          );
+        },
       ),
   );
 }

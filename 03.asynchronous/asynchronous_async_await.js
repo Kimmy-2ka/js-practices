@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { run, get, all } from "./modules/sqlite_promises.js";
+import { run, get } from "./modules/sqlite_promises.js";
 
 async function successCase() {
   await run(
@@ -18,7 +18,10 @@ async function errorCase() {
   await run(
     "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   );
-  await run("INSERT INTO books(title) VALUES(?)", ["Never Let Me Go"]);
+  const statement = await run("INSERT INTO books(title) VALUES(?)", [
+    "Never Let Me Go",
+  ]);
+  const bookId = statement.lastID;
   try {
     await run("INSERT INTO books(title) VALUES(?)", ["Never Let Me Go"]);
   } catch (err) {
@@ -29,7 +32,7 @@ async function errorCase() {
     }
   }
   try {
-    await all("SELECT * FROM book ORDER BY id");
+    await get("SELECT * FROM book WHERE id = ?", [bookId]);
   } catch (err) {
     if (err.code === "SQLITE_ERROR") {
       console.error(`${err.name}: ${err.message}`);

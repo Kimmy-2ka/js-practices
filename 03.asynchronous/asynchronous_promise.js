@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import timers from "timers/promises";
-import { run, get, all } from "./modules/sqlite_promises.js";
+import { run, get } from "./modules/sqlite_promises.js";
 
 function successCase() {
   run(
@@ -18,16 +18,21 @@ function successCase() {
 }
 
 function errorCase() {
+  let bookId;
+
   run(
     "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   )
     .then(() => run("INSERT INTO books(title) VALUES(?)", ["Never Let Me Go"]))
-    .then(() => run("INSERT INTO books(title) VALUES(?)", ["Never Let Me Go"]))
+    .then((statement) => {
+      bookId = statement.lastID;
+      return run("INSERT INTO books(title) VALUES(?)", ["Never Let Me Go"]);
+    })
     .catch((err) => {
       console.error(`${err.name}: ${err.message}`);
     })
     .then(() => {
-      return all("SELECT * FROM book ORDER BY id");
+      return get("SELECT * FROM book WHERE id = ?", [bookId]);
     })
     .catch((err) => {
       console.error(`${err.name}: ${err.message}`);
