@@ -28,7 +28,7 @@ async function errorCase(api) {
   try {
     await api.run("INSERT INTO books(title) VALUES(?)", ["Never Let Me Go"]);
   } catch (err) {
-    if (err.code === "SQLITE_CONSTRAINT") {
+    if (err instanceof Error && err.code === "SQLITE_CONSTRAINT") {
       console.error(`${err.name}: ${err.message}`);
     } else {
       throw err;
@@ -37,7 +37,7 @@ async function errorCase(api) {
   try {
     await api.get("SELECT * FROM book WHERE id = ?", [bookId]);
   } catch (err) {
-    if (err.code === "SQLITE_ERROR") {
+    if (err instanceof Error && err.code === "SQLITE_ERROR") {
       console.error(`${err.name}: ${err.message}`);
     } else {
       throw err;
