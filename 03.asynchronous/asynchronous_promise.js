@@ -37,14 +37,10 @@ function errorCase(api) {
     })
     .catch((err) => {
       console.error(`${err.name}: ${err.message}`);
-    })
-    .then(() => {
       return api.get("SELECT * FROM book WHERE id = ?", [bookId]);
     })
     .catch((err) => {
       console.error(`${err.name}: ${err.message}`);
-    })
-    .then(() => {
       return api.run("DROP TABLE books");
     });
 }
