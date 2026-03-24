@@ -1,29 +1,32 @@
 #!/usr/bin/env node
-import { run, get } from "./modules/sqlite_promises.js";
+import sqlite3 from "sqlite3";
+import { createSqliteApi } from "./modules/sqlite_promises.js";
 
-async function successCase() {
-  await run(
+async function successCase(api) {
+  await api.run(
     "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   );
-  const statement = await run("INSERT INTO books(title) VALUES(?)", [
+  const statement = await api.run("INSERT INTO books(title) VALUES(?)", [
     "Never Let Me Go",
   ]);
   console.log(statement.lastID);
-  const row = await get("SELECT * FROM books WHERE id = ?", [statement.lastID]);
+  const row = await api.get("SELECT * FROM books WHERE id = ?", [
+    statement.lastID,
+  ]);
   console.log(row);
-  await run("DROP TABLE books");
+  await api.run("DROP TABLE books");
 }
 
-async function errorCase() {
-  await run(
+async function errorCase(api) {
+  await api.run(
     "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   );
-  const statement = await run("INSERT INTO books(title) VALUES(?)", [
+  const statement = await api.run("INSERT INTO books(title) VALUES(?)", [
     "Never Let Me Go",
   ]);
   const bookId = statement.lastID;
   try {
-    await run("INSERT INTO books(title) VALUES(?)", ["Never Let Me Go"]);
+    await api.run("INSERT INTO books(title) VALUES(?)", ["Never Let Me Go"]);
   } catch (err) {
     if (err.code === "SQLITE_CONSTRAINT") {
       console.error(`${err.name}: ${err.message}`);
@@ -32,7 +35,7 @@ async function errorCase() {
     }
   }
   try {
-    await get("SELECT * FROM book WHERE id = ?", [bookId]);
+    await api.get("SELECT * FROM book WHERE id = ?", [bookId]);
   } catch (err) {
     if (err.code === "SQLITE_ERROR") {
       console.error(`${err.name}: ${err.message}`);
@@ -40,10 +43,13 @@ async function errorCase() {
       throw err;
     }
   }
-  await run("DROP TABLE books");
+  await api.run("DROP TABLE books");
 }
 
+const db = new sqlite3.Database(":memory:");
+const api = createSqliteApi(db);
+
 console.log("--エラーなしのプログラム--");
-await successCase();
+await successCase(api);
 console.log("--エラーありのプログラム--");
-await errorCase();
+await errorCase(api);
