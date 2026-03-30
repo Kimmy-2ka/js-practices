@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+import { MemoApp } from "../lib/memo_app.js";
+
+process.stdin.setEncoding("utf8");
+let input = "";
+
+process.stdin
+  .on("data", (chunk) => (input += chunk))
+  .on("end", async () => {
+    try {
+      const memoApp = await MemoApp.load();
+      await memoApp.save(input);
+    } catch (err) {
+      console.error("メモの保存に失敗しました。");
+    }
+  });
