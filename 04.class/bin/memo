@@ -6,7 +6,8 @@ import { MemoFormat } from "../lib/memo_format.js";
 const program = new Command();
 program
   .option("-l, --list", "list memos")
-  .option("-r, --reference", "reference a memo");
+  .option("-r, --reference", "reference a memo")
+  .option("-d, --delete", "delete a memo");
 program.parse();
 const options = program.opts();
 const memoApp = await MemoApp.load();
@@ -17,6 +18,9 @@ if (options.list) {
 } else if (options.reference) {
   const memoFormat = new MemoFormat(memoApp);
   memoFormat.reference();
+} else if (options.delete) {
+  const memoFormat = new MemoFormat(memoApp);
+  memoFormat.delete();
 } else {
   process.stdin.setEncoding("utf8");
   let input = "";

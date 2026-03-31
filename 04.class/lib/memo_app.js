@@ -19,6 +19,12 @@ export class MemoApp {
     await fs.writeFile("./data/memos.json", jsonText);
   }
 
+  async delete(memoId) {
+    const newMemos = this.memos.filter((memo) => memo.id !== memoId);
+    const jsonText = JSON.stringify(newMemos);
+    await fs.writeFile("./data/memos.json", jsonText);
+  }
+
   #add(input) {
     const memo = {
       id: this.#nextId(),

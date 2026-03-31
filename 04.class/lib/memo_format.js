@@ -4,6 +4,7 @@ const { Select } = Enquirer;
 export class MemoFormat {
   constructor(memoApp) {
     this.memos = memoApp.memos;
+    this.memoApp = memoApp;
   }
 
   list() {
@@ -26,6 +27,23 @@ export class MemoFormat {
     prompt
       .run()
       .then((memo) => console.log(memo.content))
+      .catch(console.error);
+  }
+
+  delete() {
+    const choices = this.memos.map((memo) => ({
+      message: memo.firstLine(),
+      value: memo.id,
+    }));
+    const prompt = new Select({
+      name: "memo",
+      message: "Select a memo to delete.",
+      choices,
+    });
+
+    prompt
+      .run()
+      .then((memoId) => this.memoApp.delete(memoId))
       .catch(console.error);
   }
 }
