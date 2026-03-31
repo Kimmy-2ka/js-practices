@@ -1,3 +1,6 @@
+import Enquirer from "enquirer";
+const { Select } = Enquirer;
+
 export class MemoFormat {
   constructor(memoApp) {
     this.memos = memoApp.memos;
@@ -5,8 +8,24 @@ export class MemoFormat {
 
   list() {
     for (const memo of this.memos) {
-      const firstLine = memo.content.split("\n")[0];
-      console.log(firstLine);
+      console.log(memo.firstLine());
     }
+  }
+
+  reference() {
+    const choices = this.memos.map((memo) => ({
+      message: memo.firstLine(),
+      value: memo,
+    }));
+    const prompt = new Select({
+      name: "memo",
+      message: "Select a memo to view.",
+      choices,
+    });
+
+    prompt
+      .run()
+      .then((memo) => console.log(memo.content))
+      .catch(console.error);
   }
 }
