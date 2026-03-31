@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import { MemoEntry } from "../lib/memo_entry.js";
 
 export class MemoApp {
   constructor() {
@@ -8,7 +9,8 @@ export class MemoApp {
   static async load() {
     const memoApp = new MemoApp();
     const text = await fs.readFile("./data/memos.json", "utf8");
-    memoApp.memos = JSON.parse(text);
+
+    memoApp.memos = JSON.parse(text).map((memo) => new MemoEntry(memo));
     return memoApp;
   }
 
@@ -18,12 +20,12 @@ export class MemoApp {
   }
 
   #add(input) {
-    const entry = {
+    const memo = {
       id: this.#nextId(),
       content: input.trimEnd(), // 標準入力の最後の改行を取り除く
     };
-
-    return this.memos.concat(entry);
+    const memoEntry = new MemoEntry(memo);
+    return this.memos.concat(memoEntry);
   }
 
   #nextId() {
