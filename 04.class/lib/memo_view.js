@@ -32,7 +32,7 @@ export class MemoView {
 
   #selectMemo(message) {
     const choices = this.memoApp.memos.map((memo) => ({
-      message: memo.firstLine(),
+      name: memo.firstLine(),
       value: memo,
     }));
 
@@ -40,6 +40,9 @@ export class MemoView {
       name: "memo",
       message,
       choices,
+      result() {
+        return this.focused.value;
+      },
     });
   }
 }
