@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 import { MemoApp } from "../lib/memo_app.js";
-import { MemoFormat } from "../lib/memo_format.js";
+import { MemoView } from "../lib/memo_view.js";
 import { MemoOption } from "../lib/memo_option.js";
 
 const option = new MemoOption();
 const memoApp = await MemoApp.load();
-const format = new MemoFormat(memoApp);
+const view = new MemoView(memoApp);
 
 if (option.hasList()) {
-  format.list();
+  view.list();
 } else if (option.hasReference()) {
-  format.reference();
+  view.reference();
 } else if (option.hasDelete()) {
-  format.delete();
+  view.delete();
 } else {
   process.stdin.setEncoding("utf8");
   let input = "";
