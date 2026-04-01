@@ -4,7 +4,7 @@ export class MemoEntry {
     this.content = memo.content;
   }
 
-  firstLine() {
-    return this.content.split("\n")[0];
+  title() {
+    return this.content.split("\n")[0] || "No Title";
   }
 }

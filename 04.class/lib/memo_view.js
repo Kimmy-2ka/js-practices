@@ -8,7 +8,7 @@ export class MemoView {
 
   list() {
     for (const memo of this.memoApp.memos) {
-      console.log(memo.firstLine());
+      console.log(memo.title());
     }
   }
 
@@ -32,7 +32,7 @@ export class MemoView {
 
   #selectMemo(message) {
     const choices = this.memoApp.memos.map((memo) => ({
-      name: memo.firstLine(),
+      name: memo.title(),
       value: memo,
     }));
 
