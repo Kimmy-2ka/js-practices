@@ -22,8 +22,8 @@ if (option.hasList()) {
     .on("end", async () => {
       try {
         await memoApp.save(input);
-      } catch (err) {
-        console.error("メモの保存に失敗しました。");
+      } catch {
+        console.error("Failed to add the memo.");
       }
     });
 }

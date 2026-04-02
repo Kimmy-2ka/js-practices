@@ -13,12 +13,12 @@ export class MemoView {
   }
 
   reference() {
-    const prompt = this.#selectMemo("Select a memo to view.");
+    const prompt = this.#selectMemo("Select a memo to display.");
 
     prompt
       .run()
       .then((memo) => console.log(memo.content))
-      .catch(console.error("メモの表示に失敗しました。"));
+      .catch(() => console.error("Failed to display the memo."));
   }
 
   delete() {
@@ -27,7 +27,7 @@ export class MemoView {
     prompt
       .run()
       .then((memo) => this.memoApp.delete(memo.id))
-      .catch(console.error("メモの削除に失敗しました。"));
+      .catch(() => console.error("Failed to delete the memo."));
   }
 
   #selectMemo(message) {
