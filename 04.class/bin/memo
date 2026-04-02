@@ -1,17 +1,17 @@
 #!/usr/bin/env node
+import { MemoOption } from "../lib/memo_option.js";
 import { MemoApp } from "../lib/memo_app.js";
 import { MemoView } from "../lib/memo_view.js";
-import { MemoOption } from "../lib/memo_option.js";
 
-const option = new MemoOption();
+const options = new MemoOption();
 const memoApp = await MemoApp.load();
 const view = new MemoView(memoApp);
 
-if (option.hasList()) {
+if (options.hasList()) {
   view.list();
-} else if (option.hasReference()) {
+} else if (options.hasReference()) {
   view.reference();
-} else if (option.hasDelete()) {
+} else if (options.hasDelete()) {
   view.delete();
 } else {
   process.stdin.setEncoding("utf8");
