@@ -21,7 +21,7 @@ if (option.hasList()) {
     .on("data", (chunk) => (input += chunk))
     .on("end", async () => {
       try {
-        await memoApp.save(input);
+        await memoApp.add(input);
       } catch {
         console.error("Failed to add the memo.");
       }

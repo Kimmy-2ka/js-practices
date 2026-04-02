@@ -2,9 +2,7 @@ import fs from "node:fs/promises";
 import { MemoEntry } from "../lib/memo_entry.js";
 
 export class MemoApp {
-  constructor() {
-    this.memos = [];
-  }
+  memos = [];
 
   static async load() {
     const memoApp = new MemoApp();
@@ -14,24 +12,23 @@ export class MemoApp {
     return memoApp;
   }
 
-  async save(input) {
-    const jsonText = JSON.stringify(this.#add(input));
-    await fs.writeFile("./data/memos.json", jsonText);
-  }
-
-  async delete(memoId) {
-    const newMemos = this.memos.filter((memo) => memo.id !== memoId);
-    const jsonText = JSON.stringify(newMemos);
-    await fs.writeFile("./data/memos.json", jsonText);
-  }
-
-  #add(input) {
-    const memo = {
+  add(input) {
+    const memoEntry = new MemoEntry({
       id: this.#nextId(),
       content: input.trimEnd(), // 標準入力の最後の改行を取り除く
-    };
-    const memoEntry = new MemoEntry(memo);
-    return this.memos.concat(memoEntry);
+    });
+    const newMemos = this.memos.concat(memoEntry);
+    return MemoApp.#save(newMemos);
+  }
+
+  delete(memoId) {
+    const newMemos = this.memos.filter((memo) => memo.id !== memoId);
+    return MemoApp.#save(newMemos);
+  }
+
+  static #save(memos) {
+    const jsonText = JSON.stringify(memos);
+    return fs.writeFile("./data/memos.json", jsonText);
   }
 
   #nextId() {
