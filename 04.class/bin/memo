@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-import { MemoOption } from "../lib/memo_option.js";
+import { MemoOptions } from "../lib/memo_options.js";
 import { MemoApp } from "../lib/memo_app.js";
 import { MemoView } from "../lib/memo_view.js";
 
-const options = new MemoOption();
+const options = new MemoOptions();
 const memoApp = await MemoApp.load();
 const view = new MemoView(memoApp);
 

@@ -1,6 +1,6 @@
 import { Command, Option } from "commander";
 
-export class MemoOption {
+export class MemoOptions {
   constructor() {
     this.options = this.#createOptions();
   }
