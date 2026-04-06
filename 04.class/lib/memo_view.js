@@ -1,5 +1,5 @@
-import Enquirer from "enquirer";
-const { Select } = Enquirer;
+import enquirer from "enquirer";
+const { Select } = enquirer;
 
 export class MemoView {
   constructor(memoApp) {
