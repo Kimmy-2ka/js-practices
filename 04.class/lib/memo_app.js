@@ -5,11 +5,11 @@ export class MemoApp {
   memos = [];
 
   static async load() {
-    const memoApp = new MemoApp();
+    const app = new MemoApp();
     const text = await fs.readFile("./data/memos.json", "utf8");
 
-    memoApp.memos = JSON.parse(text).map((memo) => new MemoEntry(memo));
-    return memoApp;
+    app.memos = JSON.parse(text).map((memo) => new MemoEntry(memo));
+    return app;
   }
 
   add(input) {
@@ -21,8 +21,8 @@ export class MemoApp {
     return MemoApp.#save(newMemos);
   }
 
-  delete(memoId) {
-    const newMemos = this.memos.filter((memo) => memo.id !== memoId);
+  delete(id) {
+    const newMemos = this.memos.filter((memo) => memo.id !== id);
     return MemoApp.#save(newMemos);
   }
 

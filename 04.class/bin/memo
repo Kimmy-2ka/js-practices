@@ -4,8 +4,8 @@ import { MemoApp } from "../lib/memo_app.js";
 import { MemoView } from "../lib/memo_view.js";
 
 const options = new MemoOptions();
-const memoApp = await MemoApp.load();
-const view = new MemoView(memoApp);
+const app = await MemoApp.load();
+const view = new MemoView(app);
 
 if (options.hasList()) {
   view.list();
@@ -21,7 +21,7 @@ if (options.hasList()) {
     .on("data", (chunk) => (input += chunk))
     .on("end", async () => {
       try {
-        await memoApp.add(input);
+        await app.add(input);
       } catch {
         console.error("Failed to add the memo.");
       }
