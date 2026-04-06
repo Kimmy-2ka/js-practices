@@ -15,13 +15,13 @@ if (options.isList()) {
   view.delete();
 } else {
   process.stdin.setEncoding("utf8");
-  let input = "";
+  let content = "";
 
   process.stdin
-    .on("data", (chunk) => (input += chunk))
+    .on("data", (chunk) => (content += chunk))
     .on("end", async () => {
       try {
-        await app.add(input);
+        await app.add(content);
       } catch {
         console.error("Failed to add the memo.");
       }

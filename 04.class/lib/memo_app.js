@@ -6,16 +6,16 @@ export class MemoApp {
 
   static async load() {
     const app = new MemoApp();
-    const text = await fs.readFile("./data/memos.json", "utf8");
+    const jsonText = await fs.readFile("./data/memos.json", "utf8");
 
-    app.memos = JSON.parse(text).map((memo) => new MemoEntry(memo));
+    app.memos = JSON.parse(jsonText).map((memo) => new MemoEntry(memo));
     return app;
   }
 
-  add(input) {
+  add(content) {
     const memoEntry = new MemoEntry({
       id: this.#nextId(),
-      content: input.trimEnd(), // 標準入力の最後の改行を取り除く
+      content: content.trimEnd(), // 標準入力の最後の改行を取り除く
     });
     const newMemos = this.memos.concat(memoEntry);
     return MemoApp.#save(newMemos);
