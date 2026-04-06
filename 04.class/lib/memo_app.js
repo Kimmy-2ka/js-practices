@@ -6,9 +6,17 @@ export class MemoApp {
 
   static async load() {
     const app = new MemoApp();
-    const jsonText = await fs.readFile("./data/memos.json", "utf8");
+    try {
+      const jsonText = await fs.readFile("./data/memos.json", "utf8");
+      app.memos = JSON.parse(jsonText).map((memo) => new MemoEntry(memo));
+    } catch (err) {
+      if (err.code === "ENOENT") {
+        app.memos = [];
+      } else {
+        throw err;
+      }
+    }
 
-    app.memos = JSON.parse(jsonText).map((memo) => new MemoEntry(memo));
     return app;
   }
 
@@ -26,7 +34,8 @@ export class MemoApp {
     return MemoApp.#save(newMemos);
   }
 
-  static #save(memos) {
+  static async #save(memos) {
+    await fs.mkdir("./data", { recursive: true });
     const jsonText = JSON.stringify(memos);
     return fs.writeFile("./data/memos.json", jsonText);
   }
