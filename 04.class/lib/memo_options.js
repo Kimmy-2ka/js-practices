@@ -5,15 +5,15 @@ export class MemoOptions {
     this.options = this.#createOptions();
   }
 
-  hasList() {
+  isList() {
     return this.options.list;
   }
 
-  hasReference() {
+  isReference() {
     return this.options.reference;
   }
 
-  hasDelete() {
+  isDelete() {
     return this.options.delete;
   }
 

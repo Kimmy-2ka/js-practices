@@ -7,11 +7,11 @@ const options = new MemoOptions();
 const app = await MemoApp.load();
 const view = new MemoView(app);
 
-if (options.hasList()) {
+if (options.isList()) {
   view.list();
-} else if (options.hasReference()) {
+} else if (options.isReference()) {
   view.reference();
-} else if (options.hasDelete()) {
+} else if (options.isDelete()) {
   view.delete();
 } else {
   process.stdin.setEncoding("utf8");
