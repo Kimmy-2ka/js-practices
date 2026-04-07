@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import crypto from "node:crypto";
 import MemoEntry from "../lib/memo_entry.js";
 
 export default class MemoApp {
@@ -22,7 +23,7 @@ export default class MemoApp {
 
   add(content) {
     const memoEntry = new MemoEntry({
-      id: this.#nextId(),
+      id: crypto.randomUUID(),
       content: content.trimEnd(), // 標準入力の最後の改行を取り除く
     });
     const newMemos = this.memos.concat(memoEntry);
@@ -38,13 +39,5 @@ export default class MemoApp {
     await fs.mkdir("./data", { recursive: true });
     const jsonText = JSON.stringify(memos);
     return fs.writeFile("./data/memos.json", jsonText);
-  }
-
-  #nextId() {
-    if (this.memos.length === 0) {
-      return 1;
-    }
-
-    return Math.max(...this.memos.map((memo) => memo.id)) + 1;
   }
 }
