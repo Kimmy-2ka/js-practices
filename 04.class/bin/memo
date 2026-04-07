@@ -20,10 +20,6 @@ if (options.isList()) {
   process.stdin
     .on("data", (chunk) => (content += chunk))
     .on("end", async () => {
-      try {
-        await app.add(content);
-      } catch {
-        console.error("Failed to add the memo.");
-      }
+      await app.add(content);
     });
 }

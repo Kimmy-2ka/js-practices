@@ -15,23 +15,15 @@ export class MemoView {
   async reference() {
     const prompt = this.#selectMemo("Select a memo to display.");
 
-    try {
-      const memo = await prompt.run();
-      console.log(memo.content);
-    } catch {
-      console.error("Failed to display the memo.");
-    }
+    const memo = await prompt.run();
+    console.log(memo.content);
   }
 
   async delete() {
     const prompt = this.#selectMemo("Select a memo to delete.");
 
-    try {
-      const memo = await prompt.run();
-      await this.memoApp.delete(memo.id);
-    } catch {
-      console.error("Failed to delete the memo.");
-    }
+    const memo = await prompt.run();
+    await this.memoApp.delete(memo.id);
   }
 
   #selectMemo(message) {
