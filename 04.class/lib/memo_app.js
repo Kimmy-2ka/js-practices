@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
-import { MemoEntry } from "../lib/memo_entry.js";
+import MemoEntry from "../lib/memo_entry.js";
 
-export class MemoApp {
+export default class MemoApp {
   memos = [];
 
   static async load() {

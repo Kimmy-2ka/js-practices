@@ -1,7 +1,7 @@
 import enquirer from "enquirer";
 const { Select } = enquirer;
 
-export class MemoView {
+export default class MemoView {
   constructor(memoApp) {
     this.memoApp = memoApp;
   }
