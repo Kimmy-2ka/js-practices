@@ -10,9 +10,9 @@ const view = new MemoView(app);
 if (options.isList()) {
   view.list();
 } else if (options.isReference()) {
-  view.reference();
+  await view.reference();
 } else if (options.isDelete()) {
-  view.delete();
+  await view.delete();
 } else {
   process.stdin.setEncoding("utf8");
   let content = "";

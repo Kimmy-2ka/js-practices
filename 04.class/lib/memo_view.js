@@ -12,22 +12,26 @@ export class MemoView {
     }
   }
 
-  reference() {
+  async reference() {
     const prompt = this.#selectMemo("Select a memo to display.");
 
-    prompt
-      .run()
-      .then((memo) => console.log(memo.content))
-      .catch(() => console.error("Failed to display the memo."));
+    try {
+      const memo = await prompt.run();
+      console.log(memo.content);
+    } catch {
+      console.error("Failed to display the memo.");
+    }
   }
 
-  delete() {
+  async delete() {
     const prompt = this.#selectMemo("Select a memo to delete.");
 
-    prompt
-      .run()
-      .then((memo) => this.memoApp.delete(memo.id))
-      .catch(() => console.error("Failed to delete the memo."));
+    try {
+      const memo = await prompt.run();
+      await this.memoApp.delete(memo.id);
+    } catch {
+      console.error("Failed to delete the memo.");
+    }
   }
 
   #selectMemo(message) {
