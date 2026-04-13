@@ -16,18 +16,30 @@ export default class MemoApp {
   }
 
   list() {
+    if (!this.#hasMemos()) {
+      console.log("No memos.");
+      return;
+    }
     for (const memo of this.memos) {
       console.log(memo.firstLine());
     }
   }
 
   async reference() {
+    if (!this.#hasMemos()) {
+      console.log("No memos to display.");
+      return;
+    }
     const prompt = this.#selectMemo("Select a memo to display.");
     const memo = await prompt.run();
     console.log(memo.content);
   }
 
   async delete() {
+    if (!this.#hasMemos()) {
+      console.log("No memos to delete.");
+      return;
+    }
     const prompt = this.#selectMemo("Select a memo to delete.");
     const selectedMemo = await prompt.run();
     this.memos = this.memos.filter((memo) => memo.id !== selectedMemo.id);
@@ -38,6 +50,10 @@ export default class MemoApp {
     const memo = MemoEntry.create(content);
     this.memos = this.memos.concat(memo);
     await memoStore.save(this.memos);
+  }
+
+  #hasMemos() {
+    return this.memos.length > 0;
   }
 
   #selectMemo(message) {
