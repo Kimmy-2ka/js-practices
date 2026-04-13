@@ -1,18 +1,16 @@
 #!/usr/bin/env node
 import MemoOptions from "../lib/memo_options.js";
 import MemoApp from "../lib/memo_app.js";
-import MemoView from "../lib/memo_view.js";
 
 const options = new MemoOptions();
-const app = await MemoApp.load();
-const view = new MemoView(app);
+const app = await MemoApp.build();
 
 if (options.isList()) {
-  view.list();
+  app.list();
 } else if (options.isReference()) {
-  await view.reference();
+  await app.reference();
 } else if (options.isDelete()) {
-  await view.delete();
+  await app.delete();
 } else {
   process.stdin.setEncoding("utf8");
   let content = "";
