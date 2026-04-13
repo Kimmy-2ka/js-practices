@@ -1,20 +1,22 @@
 import { Command, Option } from "commander";
 
 export default class MemoOptions {
+  #options;
+
   constructor() {
-    this.options = this.#createOptions();
+    this.#options = this.#createOptions();
   }
 
   isList() {
-    return this.options.list;
+    return this.#options.list;
   }
 
   isReference() {
-    return this.options.reference;
+    return this.#options.reference;
   }
 
   isDelete() {
-    return this.options.delete;
+    return this.#options.delete;
   }
 
   #createOptions() {

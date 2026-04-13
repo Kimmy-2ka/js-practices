@@ -1,9 +1,20 @@
 import crypto from "node:crypto";
 
 export default class MemoEntry {
+  #id;
+  #content;
+
   constructor(memo) {
-    this.id = memo.id;
-    this.content = memo.content;
+    this.#id = memo.id;
+    this.#content = memo.content;
+  }
+
+  get id() {
+    return this.#id;
+  }
+
+  get content() {
+    return this.#content;
   }
 
   static all(memosData) {
@@ -17,10 +28,17 @@ export default class MemoEntry {
     });
   }
 
+  toJSON() {
+    return {
+      id: this.#id,
+      content: this.#content,
+    };
+  }
+
   firstLine() {
     const maxLength = 50; // 1行が長かった時のために、最大値を設定
     return (
-      this.content.split("\n")[0].slice(0, maxLength) || "First line is blank."
+      this.#content.split("\n")[0].slice(0, maxLength) || "First line is blank."
     );
   }
 }

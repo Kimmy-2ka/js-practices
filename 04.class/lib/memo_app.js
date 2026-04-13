@@ -5,8 +5,10 @@ import MemoEntry from "./memo_entry.js";
 const { Select } = enquirer;
 
 export default class MemoApp {
+  #memos;
+
   constructor(memos) {
-    this.memos = memos;
+    this.#memos = memos;
   }
 
   static async build() {
@@ -20,7 +22,7 @@ export default class MemoApp {
       console.log("No memos.");
       return;
     }
-    for (const memo of this.memos) {
+    for (const memo of this.#memos) {
       console.log(memo.firstLine());
     }
   }
@@ -42,22 +44,22 @@ export default class MemoApp {
     }
     const prompt = this.#selectMemo("Select a memo to delete.");
     const selectedMemo = await prompt.run();
-    this.memos = this.memos.filter((memo) => memo.id !== selectedMemo.id);
-    await memoStore.save(this.memos);
+    this.#memos = this.#memos.filter((memo) => memo.id !== selectedMemo.id);
+    await memoStore.save(this.#memos);
   }
 
   async add(content) {
     const memo = MemoEntry.create(content);
-    this.memos = this.memos.concat(memo);
-    await memoStore.save(this.memos);
+    this.#memos = this.#memos.concat(memo);
+    await memoStore.save(this.#memos);
   }
 
   #hasMemos() {
-    return this.memos.length > 0;
+    return this.#memos.length > 0;
   }
 
   #selectMemo(message) {
-    const choices = this.memos.map((memo) => ({
+    const choices = this.#memos.map((memo) => ({
       name: memo.firstLine(),
       value: memo,
     }));
