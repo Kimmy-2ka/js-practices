@@ -16,7 +16,9 @@ if (options.isList()) {
   let content = "";
 
   process.stdin
-    .on("data", (chunk) => (content += chunk))
+    .on("data", (chunk) => {
+      content += chunk;
+    })
     .on("end", async () => {
       await app.add(content);
     });
