@@ -33,8 +33,8 @@ export default class MemoApp {
       return;
     }
     const prompt = this.#selectMemo("Select a memo to display.");
-    const memo = await prompt.run();
-    console.log(memo.content);
+    const selectedMemo = await prompt.run();
+    console.log(selectedMemo.content);
   }
 
   async delete() {
