@@ -2,6 +2,16 @@
 import MemoOptions from "../lib/memo_options.js";
 import MemoApp from "../lib/memo_app.js";
 
+async function readStdin() {
+  process.stdin.setEncoding("utf8");
+  let content = "";
+  for await (const chunk of process.stdin) {
+    content += chunk;
+  }
+
+  return content;
+}
+
 const options = new MemoOptions();
 const app = await MemoApp.build();
 
@@ -12,14 +22,6 @@ if (options.isList()) {
 } else if (options.isDelete()) {
   await app.delete();
 } else {
-  process.stdin.setEncoding("utf8");
-  let content = "";
-
-  process.stdin
-    .on("data", (chunk) => {
-      content += chunk;
-    })
-    .on("end", async () => {
-      await app.add(content);
-    });
+  const content = await readStdin();
+  await app.add(content);
 }
