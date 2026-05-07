@@ -16,7 +16,7 @@ export default class MemoApp {
   static async build(filePath) {
     const store = new MemoStore(filePath);
     const memosData = await store.load();
-    const memos = MemoEntry.all(memosData);
+    const memos = memosData.map((memo) => new MemoEntry(memo));
     return new MemoApp(store, memos);
   }
 

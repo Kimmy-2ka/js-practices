@@ -17,10 +17,6 @@ export default class MemoEntry {
     return this.#content;
   }
 
-  static all(memosData) {
-    return memosData.map((memo) => new MemoEntry(memo));
-  }
-
   static create(content) {
     return new MemoEntry({
       id: crypto.randomUUID(),
