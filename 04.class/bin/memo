@@ -1,0 +1,29 @@
+#!/usr/bin/env node
+import MemoOptions from "../lib/memo_options.js";
+import MemoApp from "../lib/memo_app.js";
+
+const FILE_PATH = "./data/memos.json";
+
+async function readStdin() {
+  process.stdin.setEncoding("utf8");
+  let content = "";
+  for await (const chunk of process.stdin) {
+    content += chunk;
+  }
+
+  return content;
+}
+
+const options = new MemoOptions();
+const app = await MemoApp.build(FILE_PATH);
+
+if (options.isList()) {
+  app.list();
+} else if (options.isReference()) {
+  await app.reference();
+} else if (options.isDelete()) {
+  await app.delete();
+} else {
+  const content = await readStdin();
+  await app.add(content);
+}
