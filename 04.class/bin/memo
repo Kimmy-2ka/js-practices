@@ -2,6 +2,8 @@
 import MemoOptions from "../lib/memo_options.js";
 import MemoApp from "../lib/memo_app.js";
 
+const FILE_PATH = "./data/memos.json";
+
 async function readStdin() {
   process.stdin.setEncoding("utf8");
   let content = "";
@@ -13,7 +15,7 @@ async function readStdin() {
 }
 
 const options = new MemoOptions();
-const app = await MemoApp.build();
+const app = await MemoApp.build(FILE_PATH);
 
 if (options.isList()) {
   app.list();

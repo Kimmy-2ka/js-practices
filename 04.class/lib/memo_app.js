@@ -1,20 +1,23 @@
 import enquirer from "enquirer";
-import memoStore from "./memo_store.js";
+import MemoStore from "./memo_store.js";
 import MemoEntry from "./memo_entry.js";
 
 const { Select } = enquirer;
 
 export default class MemoApp {
+  #store;
   #memos;
 
-  constructor(memos) {
+  constructor(store, memos) {
+    this.#store = store;
     this.#memos = memos;
   }
 
-  static async build() {
-    const memosData = await memoStore.load();
+  static async build(filePath) {
+    const store = new MemoStore(filePath);
+    const memosData = await store.load();
     const memos = MemoEntry.all(memosData);
-    return new MemoApp(memos);
+    return new MemoApp(store, memos);
   }
 
   list() {
@@ -45,13 +48,13 @@ export default class MemoApp {
     const prompt = this.#selectMemo("Select a memo to delete.");
     const selectedMemo = await prompt.run();
     this.#memos = this.#memos.filter((memo) => memo.id !== selectedMemo.id);
-    await memoStore.save(this.#memos);
+    await this.#store.save(this.#memos);
   }
 
   async add(content) {
     const memo = MemoEntry.create(content);
     this.#memos = this.#memos.concat(memo);
-    await memoStore.save(this.#memos);
+    await this.#store.save(this.#memos);
   }
 
   #hasMemos() {
