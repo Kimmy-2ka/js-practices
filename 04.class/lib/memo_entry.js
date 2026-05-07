@@ -24,7 +24,7 @@ export default class MemoEntry {
     });
   }
 
-  toJSON() {
+  toObject() {
     return {
       id: this.#id,
       content: this.#content,

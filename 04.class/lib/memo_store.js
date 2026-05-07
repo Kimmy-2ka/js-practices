@@ -22,7 +22,7 @@ export default class MemoStore {
 
   async save(memos) {
     await fs.mkdir(path.dirname(this.#filePath), { recursive: true });
-    const jsonText = JSON.stringify(memos);
+    const jsonText = JSON.stringify(memos.map((memo) => memo.toObject()));
     await fs.writeFile(this.#filePath, jsonText);
   }
 }
