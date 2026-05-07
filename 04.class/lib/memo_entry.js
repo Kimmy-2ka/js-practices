@@ -4,9 +4,9 @@ export default class MemoEntry {
   #id;
   #content;
 
-  constructor(memo) {
-    this.#id = memo.id;
-    this.#content = memo.content;
+  constructor({ id, content }) {
+    this.#id = id;
+    this.#content = content;
   }
 
   get id() {
